@@ -7,9 +7,9 @@ def evaluate(model, X_test, y_test):
 
     result = {
         "accuracy": accuracy_score(y_test, y_pred),
-        "precision": precision_score(y_test, y_pred, average="weighted"),
-        "recall": recall_score(y_test, y_pred, average="weighted"),
-        "f1": f1_score(y_test, y_pred, average="weighted"),
+        "precision": precision_score(y_test, y_pred, average="weighted", zero_division=0),
+        "recall": recall_score(y_test, y_pred, average="weighted", zero_division=0),
+        "f1": f1_score(y_test, y_pred, average="weighted", zero_division=0),
     }
 
     # ROC-AUC only if model supports probabilities

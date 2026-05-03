@@ -1,2 +1,122 @@
-config,model,status,rows,columns,duplicates_removed
-"{'status': 'success', 'rows': 983019, 'columns': 47, 'duplicates_removed': 65556}",['KNN'],success,983019,47,65556
+config,model,dataset,target,train_time_sec,accuracy,precision,recall,f1,roc_auc
+"0          baseline
+1     features_only
+2          pca_only
+3      features_pca
+4          baseline
+5     features_only
+6          pca_only
+7      features_pca
+8          baseline
+9     features_only
+10         pca_only
+11     features_pca
+Name: config, dtype: str","0     KNN
+1     KNN
+2     KNN
+3     KNN
+4     KNN
+5     KNN
+6     KNN
+7     KNN
+8     KNN
+9     KNN
+10    KNN
+11    KNN
+Name: model, dtype: str","0         baseline_dataset
+1         baseline_dataset
+2         baseline_dataset
+3         baseline_dataset
+4     network_logs_dataset
+5     network_logs_dataset
+6     network_logs_dataset
+7     network_logs_dataset
+8              ioT_context
+9              ioT_context
+10             ioT_context
+11             ioT_context
+Name: dataset, dtype: str","0     target_binary
+1     target_binary
+2     target_binary
+3     target_binary
+4     target_binary
+5     target_binary
+6     target_binary
+7     target_binary
+8      target_multi
+9      target_multi
+10     target_multi
+11     target_multi
+Name: target, dtype: str","0     10.0430
+1      0.6515
+2      0.4838
+3      0.4362
+4      0.1968
+5      0.1826
+6      0.1412
+7      0.1496
+8     82.5360
+9     82.1751
+10    55.6307
+11    79.7781
+Name: train_time_sec, dtype: float64","0     0.829140
+1     0.824598
+2     0.829140
+3     0.824598
+4     0.985528
+5     0.985528
+6     0.985061
+7     0.985061
+8     0.922653
+9     0.922653
+10    0.917174
+11    0.917174
+Name: accuracy, dtype: float64","0     0.842969
+1     0.837325
+2     0.842969
+3     0.837325
+4     0.985672
+5     0.985672
+6     0.985138
+7     0.985138
+8     0.921163
+9     0.921163
+10    0.915362
+11    0.915362
+Name: precision, dtype: float64","0     0.829140
+1     0.824598
+2     0.829140
+3     0.824598
+4     0.985528
+5     0.985528
+6     0.985061
+7     0.985061
+8     0.922653
+9     0.922653
+10    0.917174
+11    0.917174
+Name: recall, dtype: float64","0     0.824804
+1     0.820298
+2     0.824804
+3     0.820298
+4     0.985111
+5     0.985111
+6     0.984646
+7     0.984646
+8     0.921526
+9     0.921526
+10    0.915117
+11    0.915117
+Name: f1, dtype: float64","0          NaN
+1          NaN
+2          NaN
+3          NaN
+4          NaN
+5          NaN
+6          NaN
+7          NaN
+8     0.836951
+9     0.836951
+10    0.858561
+11    0.858561
+Name: roc_auc, dtype: float64"

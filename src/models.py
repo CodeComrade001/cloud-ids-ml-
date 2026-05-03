@@ -14,23 +14,23 @@ def get_model(name):
 
 PARAM_GRIDS = {
     "KNN": {
-        "n_neighbors": [3, 5, 7, 11],
+        "n_neighbors": [3, 5, 7],
         "weights": ["uniform", "distance"]
     },
 
     "SVM": {
-        "C": [0.1, 1, 10],
+        "C": [1, 10],
         "kernel": ["linear", "rbf"]
     },
 
     "MLP": {
         "hidden_layer_sizes": [(50,), (100,)],
-        "activation": ["relu", "tanh"],
-        "max_iter": [200, 300]
+        "activation": ["relu"],
+        "max_iter": [200]
     },
 
     "RF": {
-        "n_estimators": [50, 100, 200],
-        "max_depth": [None, 10, 20]
+        "n_estimators": [50, 100],
+        "max_depth": [None, 10]
     }
 }

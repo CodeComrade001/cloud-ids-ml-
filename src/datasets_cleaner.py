@@ -56,6 +56,7 @@ def clean_cybersecurity_intrusion_datasets(path, save_path):
 
     except Exception as e:
         raise RuntimeError(f"Cleaning dataset 1 failed: {e}")
+import pandas as pd
 
 def clean_iot_intrusion_dataset(path, save_path):
     try:
@@ -65,51 +66,77 @@ def clean_iot_intrusion_dataset(path, save_path):
 
     try:
         # -------------------------
-        # 0. VALIDATE LABEL FIRST
+        # 0. NORMALIZE COLUMN NAMES
+        # -------------------------
+        df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_")
+
+        # -------------------------
+        # 1. VALIDATE LABEL
         # -------------------------
         if "label" not in df.columns:
-            raise ValueError("Missing 'label' column")
+            raise ValueError(f"Missing 'label' column. Found: {df.columns.tolist()}")
 
-        # Preserve label separately
         labels = df["label"].copy()
 
         # -------------------------
-        # 1. DROP USELESS COLUMNS
+        # 2. DROP USELESS / HIGH-RISK COLUMNS
         # -------------------------
-        drop_cols = ["Source_IP", "Destination_IP"]
+        drop_cols = ["source_ip", "destination_ip"]
         df = df.drop(columns=[c for c in drop_cols if c in df.columns])
 
         # -------------------------
-        # 2. CONVERT ONLY FEATURES
+        # 3. SEPARATE FEATURES
         # -------------------------
         feature_cols = [col for col in df.columns if col != "label"]
 
-        for col in feature_cols:
-            df[col] = pd.to_numeric(df[col], errors='coerce')
+        # -------------------------
+        # 4. FORCE NUMERIC CONVERSION
+        # -------------------------
+        df[feature_cols] = df[feature_cols].apply(
+            lambda col: pd.to_numeric(col, errors="coerce")
+        )
 
         # -------------------------
-        # 3. HANDLE MISSING VALUES
+        # 5. DROP BAD COLUMNS (too many NaNs)
+        # -------------------------
+        threshold = 0.5  # 50% rule (matches your methodology)
+        cols_to_drop = [
+            col for col in feature_cols
+            if df[col].isna().mean() > threshold
+        ]
+
+        df = df.drop(columns=cols_to_drop)
+        feature_cols = [col for col in df.columns if col != "label"]
+
+        # -------------------------
+        # 6. FILL REMAINING NaNs
         # -------------------------
         for col in feature_cols:
             df[col] = df[col].fillna(df[col].median())
 
         # -------------------------
-        # 4. RESTORE LABEL
+        # 7. RESTORE LABEL
         # -------------------------
         df["label"] = labels
-
-        # Remove rows where label is missing
         df = df[df["label"].notna()]
 
         # -------------------------
-        # 5. REMOVE DUPLICATES
+        # 8. REMOVE DUPLICATES
         # -------------------------
         before = len(df)
         df = df.drop_duplicates()
         duplicates_removed = before - len(df)
 
         # -------------------------
-        # 6. FINAL VALIDATION
+        # 9. FINAL NUMERIC CHECK (CRITICAL)
+        # -------------------------
+        non_numeric = df.drop(columns=["label"]).select_dtypes(exclude=["int64", "float64"])
+
+        if len(non_numeric.columns) > 0:
+            raise ValueError(f"Non-numeric columns remain: {non_numeric.columns.tolist()}")
+
+        # -------------------------
+        # 10. FINAL VALIDATION
         # -------------------------
         if df["label"].isna().any():
             raise ValueError("Label column still contains NaN")
@@ -117,13 +144,17 @@ def clean_iot_intrusion_dataset(path, save_path):
         if df.empty:
             raise ValueError("Dataset became empty after cleaning")
 
+        # -------------------------
+        # 11. SAVE
+        # -------------------------
         df.to_csv(save_path, index=False)
 
         return {
             "status": "success",
             "rows": df.shape[0],
             "columns": df.shape[1],
-            "duplicates_removed": duplicates_removed
+            "duplicates_removed": duplicates_removed,
+            "dropped_columns_due_to_nan": cols_to_drop
         }
 
     except Exception as e:

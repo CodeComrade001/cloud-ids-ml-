@@ -1,12 +1,16 @@
 # src/loader.py
 import pandas as pd
+import numpy as np
+from sklearn.preprocessing import LabelEncoder
+
 
 def load_data(path):
     df = pd.read_csv(path)
 
-    # 🔴 Normalize column names FIRST
-    df.columns = df.columns.str.strip().str.lower()
+    # Normalize column names
+    df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_")
 
+    # Identify label column
     if "intrusion" in df.columns:
         df = df.rename(columns={"intrusion": "target"})
     elif "attack_detected" in df.columns:
@@ -18,31 +22,60 @@ def load_data(path):
 
     return df
 
+
 def standardize_target(df):
     if "target" not in df.columns:
-        raise ValueError("Target column missing after load_data")
+        raise ValueError("Missing 'target' column")
 
-    def map_target(x):
-        val = str(x).lower()
-        if val in ["0", "normal", "benign"]:
-            return 0
-        return 1
+    # Clean target
+    df["target"] = df["target"].astype(str).str.strip().str.lower()
 
-    df["target"] = df["target"].apply(map_target)
+    # Multi-class encoding
+    le = LabelEncoder()
+    df["target_multi"] = le.fit_transform(df["target"])
 
-    return df
+    classes = list(le.classes_)
+    encoded = np.asarray(le.transform(le.classes_)).tolist()
+    label_mapping = dict(zip(classes, encoded))
+
+    print("\n🎯 Label Mapping:")
+    for k, v in label_mapping.items():
+        print(f"{k} → {v}")
+
+    # Binary target (SAFE VERSION)
+    unique_labels = df["target"].unique()
+
+    if len(unique_labels) == 2:
+        print("✅ Binary classification detected")
+        df["target_binary"] = df["target_multi"]
+
+    else:
+        print(f"⚠️ Multi-class detected ({len(unique_labels)} classes)")
+
+        # Safer binary mapping
+        normal_keywords = ["normal", "benign"]
+
+        def map_binary(x):
+            x = str(x).lower()
+            return 0 if any(k in x for k in normal_keywords) else 1
+
+        df["target_binary"] = df["target"].apply(map_binary)
+
+        # Safety check
+        if df["target_binary"].nunique() < 2:
+            raise ValueError("Binary mapping failed: only one class detected")
+
+    return df, label_mapping
+
 
 def validate_dataset(df):
-    assert "target" in df.columns
+    if "target" not in df.columns:
+        raise ValueError("Missing target column")
 
     if df["target"].isna().any():
         raise ValueError("NaN in target")
-
-    if df["target"].nunique() != 2:
-        raise ValueError("Target must be binary")
 
     if df.empty:
         raise ValueError("Empty dataset")
 
     return df
-

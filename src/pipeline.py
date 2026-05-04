@@ -46,10 +46,10 @@ DATASETS = {
 # RESULTS_FILE = "results/summary/SVM_training_results.csv"
 
 # 3. MLP
-RESULTS_FILE = "results/summary/MLP_training_results.csv"
+# RESULTS_FILE = "results/summary/MLP_training_results.csv"
 
 # 4. Random Forest
-# RESULTS_FILE = "results/summary/RF_training_results.csv"
+RESULTS_FILE = "results/summary/RF_training_results.csv"
 
 # 5. Logistic Regression
 # RESULTS_FILE = "results/summary/LR_training_results.csv"

@@ -11,45 +11,63 @@ REQUIRED_SCHEMA = {
     "no_nan": True
 }
 
-# =========================
-# 7) REDUCE PARAMETER GRIDS (models.py)
-# Example smaller grids
-# =========================
 
-PARAM_GRIDS = {
-    "KNN": {
-        "n_neighbors": [3, 5, 7]
-    },
+# ==================================================
+# SEQUENTIAL MANUAL TRAINING (BEST FOR LOW RAM PC)
+# Run ONE model at a time
+# ==================================================
 
-    "SVM": {
-        "C": [1, 10],
-        "kernel": ["rbf"]
-    },
-
-    "MLP": {
-        "hidden_layer_sizes": [(50,), (100,)],
-        "max_iter": [200]
-    },
-
-    "RF": {
-        "n_estimators": [50, 100],
-        "max_depth": [None, 10]
-    }
-}
-
-# sequential manual training
 # 1. KNN
-MODELS = ["KNN"]
+# MODELS = ["KNN"]
+
 # 2. SVM
 # MODELS = ["SVM"]
+
 # 3. MLP
-# MODELS = ["MLP"]
-# 4. RF
-# The line `# MODELS = ["RF"]` is a commented-out line in the code. This means that it is not
-# currently active or being used in the program. It is likely used as a placeholder or for testing
-# purposes. If you want to use the Random Forest (RF) model for training, you can uncomment this line
-# by removing the `#` at the beginning and run the program with this configuration.
+MODELS = ["MLP"]
+
+# 4. Random Forest
 # MODELS = ["RF"]
 
-# for full testing
-# MODELS = ["KNN", "SVM", "MLP", "RF"]
+# 5. Logistic Regression
+# MODELS = ["LR"]
+
+# 6. Decision Tree
+# MODELS = ["DT"]
+
+# 7. Naive Bayes
+# MODELS = ["NB"]
+
+# 8. Gradient Boosting
+# MODELS = ["GB"]
+
+# 9. Voting Ensemble
+# Uses multiple models internally, so heavier than single models
+# MODELS = ["VOTE"]
+
+
+# ==================================================
+# LIGHT BATCH TESTING (2 at a time recommended)
+# ==================================================
+
+# MODELS = ["LR", "NB"]
+# MODELS = ["DT", "RF"]
+# MODELS = ["GB", "MLP"]
+# MODELS = ["KNN", "SVM"]
+
+
+# ==================================================
+# FULL TESTING (ONLY IF MACHINE CAN HANDLE IT)
+# ==================================================
+
+# MODELS = [
+#     "KNN",
+#     "SVM",
+#     "MLP",
+#     "RF",
+#     "LR",
+#     "DT",
+#     "NB",
+#     "GB",
+#     "VOTE"
+# ]

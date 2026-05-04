@@ -2,14 +2,33 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.ensemble import VotingClassifier
 
 def get_model(name):
     models = {
         "KNN": KNeighborsClassifier(),
-        "SVM": SVC(probability=True),
+        "SVM": SVC(),
         "MLP": MLPClassifier(),
-        "RF": RandomForestClassifier()
+        "RF": RandomForestClassifier(),
+        "LR": LogisticRegression(max_iter=300),
+        "DT": DecisionTreeClassifier(),
+        "NB": GaussianNB(),
+        "GB": GradientBoostingClassifier(),
+
+        "VOTE": VotingClassifier(
+            estimators=[
+                ("rf", RandomForestClassifier()),
+                ("svm", SVC(probability=True)),
+                ("lr", LogisticRegression(max_iter=300))
+            ],
+            voting="soft"
+        )
     }
+
     return models[name]
 
 PARAM_GRIDS = {
@@ -32,5 +51,21 @@ PARAM_GRIDS = {
     "RF": {
         "n_estimators": [50, 100],
         "max_depth": [None, 10]
-    }
+    },
+    
+    "LR": {
+        "C": [1]
+    },
+
+    "DT": {
+        "max_depth": [10, None]
+    },
+
+    "NB": {},
+
+    "GB": {
+        "n_estimators": [50]
+    },
+
+    "VOTE": {}
 }

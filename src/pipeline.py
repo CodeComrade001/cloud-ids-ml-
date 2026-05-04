@@ -12,6 +12,8 @@ import time
 import numpy as np
 import pandas as pd
 
+from src.model_handler import MODEL_HANDLERS, BaseModelHandler
+
 np.random.seed(42)
 
 from experiments.ExperimentLogger import ExperimentLogger
@@ -20,8 +22,7 @@ from src.preprocessing import analyze_dataset, split_data, scale_data
 from src.feature_engineering import FeatureEngineer
 from src.dimensionality import apply_pca
 from sklearn.model_selection import train_test_split
-from src.models import PARAM_GRIDS, get_model
-from src.trainer import train
+from src.models import  get_model
 from src.evaluator import evaluate
 
 
@@ -34,7 +35,10 @@ DATASETS = {
     "ioT_context": "data/cleaned/IoT_Intrusion_cleaned.csv"
 }
 
-RESULTS_FILE = "results/summary/KNN_training_results.csv"
+# RESULTS_FILE = "results/summary/KNN_training_results.csv"
+# RESULTS_FILE = "results/summary/SVM_training_results.csv"
+RESULTS_FILE = "results/summary/MLP_training_results.csv"
+# RESULTS_FILE = "results/summary/RF_training_results.csv"
 
 
 # ==========================================================
@@ -218,22 +222,29 @@ def run_pipeline(configurations, model_names, parameter_grids):
                 line()
 
                 try:
-                    model = get_model(model_name)
-                    params = parameter_grids.get(model_name, {})
-
                     section("Training model")
                     
-                    start_train = time.perf_counter()
+                    line()
+                    print(f"🤖 MODEL NAME AND HANDLER FETCH : {model_name}")
+                    line()
+                    
+                    model = get_model(model_name)
+                    params = parameter_grids.get(model_name)
+
+                    
                     
                     line()
+                    start_train = time.perf_counter()
                     print(f"⏱️ Training {model_name}... at {time.strftime('%X')}")
                     line()
                     
-                    trained_model = train(
+                    handler = MODEL_HANDLERS.get(model_name, BaseModelHandler())
+                    
+                    trained_model = handler.train(
                         model=model,
-                        params=params,
                         X_train=X_tr,
                         y_train=y_train,
+                        params=params,
                         dataset_name=dataset_name
                     )
                     

@@ -35,10 +35,36 @@ DATASETS = {
     "ioT_context": "data/cleaned/IoT_Intrusion_cleaned.csv"
 }
 
+# ==================================================
+# SELECT RESULT FILE (MATCH ACTIVE MODEL)
+# ==================================================
+
+# 1. KNN
 # RESULTS_FILE = "results/summary/KNN_training_results.csv"
+
+# 2. SVM
 # RESULTS_FILE = "results/summary/SVM_training_results.csv"
+
+# 3. MLP
 RESULTS_FILE = "results/summary/MLP_training_results.csv"
+
+# 4. Random Forest
 # RESULTS_FILE = "results/summary/RF_training_results.csv"
+
+# 5. Logistic Regression
+# RESULTS_FILE = "results/summary/LR_training_results.csv"
+
+# 6. Decision Tree
+# RESULTS_FILE = "results/summary/DT_training_results.csv"
+
+# 7. Naive Bayes
+# RESULTS_FILE = "results/summary/NB_training_results.csv"
+
+# 8. Gradient Boosting
+# RESULTS_FILE = "results/summary/GB_training_results.csv"
+
+# 9. Voting Ensemble
+# RESULTS_FILE = "results/summary/VOTE_training_results.csv"
 
 
 # ==========================================================

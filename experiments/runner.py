@@ -14,7 +14,7 @@ from experiments.logger import log
 # ALL_RESULTS_DIR = "results/summary/all_svm_results.csv"
 
 # 3. MLP
-ALL_RESULTS_DIR = "results/summary/all_mlp_results.csv"
+# ALL_RESULTS_DIR = "results/summary/all_mlp_results.csv"
 
 # 4. Random Forest
 # ALL_RESULTS_DIR = "results/summary/all_rf_results.csv"
@@ -29,7 +29,7 @@ ALL_RESULTS_DIR = "results/summary/all_mlp_results.csv"
 # ALL_RESULTS_DIR = "results/summary/all_nb_results.csv"
 
 # 8. Gradient Boosting
-# ALL_RESULTS_DIR = "results/summary/all_gb_results.csv"
+ALL_RESULTS_DIR = "results/summary/all_gb_results.csv"
 
 # 9. Voting Ensemble
 # ALL_RESULTS_DIR = "results/summary/all_vote_results.csv"

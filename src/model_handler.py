@@ -115,15 +115,66 @@ class MLPHandler(BaseModelHandler):
 
         return super().train(model, X_train, y_train, params, dataset_name)
 
+class LRHandler(BaseModelHandler):
+    def train(self, model, X_train, y_train, params, dataset_name):
+
+        model = clone(model)
+
+        if dataset_name == "ioT_context":
+
+            model.set_params(
+                solver="saga",
+                max_iter=1000,
+                n_jobs=-1,
+                class_weight="balanced",
+                random_state=42
+            )
+
+            params = {"C": [0.1, 1, 5]}
+
+        else:
+            model.set_params(
+                max_iter=300
+            )
+
+        return super().train(model, X_train, y_train, params, dataset_name)
+
+class GBHandler(BaseModelHandler):
+    def train(self, model, X_train, y_train, params, dataset_name):
+
+        model = clone(model)
+
+        if dataset_name == "ioT_context":
+
+            if len(X_train) > 60000:
+                X_train, _, y_train, _ = train_test_split(
+                    X_train,
+                    y_train,
+                    train_size=60000,
+                    stratify=y_train,
+                    random_state=42
+                )
+
+            model.set_params(
+                n_estimators=50,
+                learning_rate=0.1,
+                max_depth=3,
+                subsample=0.8,
+                random_state=42
+            )
+
+            params = {}
+
+        return super().train(model, X_train, y_train, params, dataset_name)
 
 MODEL_HANDLERS = {
     "KNN": BaseModelHandler(),
     "SVM": SVMHandler(),
     "MLP": MLPHandler(),
     "RF": BaseModelHandler(),
-    "LR": BaseModelHandler(),
+    "LR": LRHandler(),
     "DT": BaseModelHandler(),
     "NB": BaseModelHandler(),
-    "GB": BaseModelHandler(),
+    "GB": GBHandler(),
     "VOTE": BaseModelHandler()
 }

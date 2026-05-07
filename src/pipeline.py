@@ -46,7 +46,7 @@ DATASETS = {
 # RESULTS_FILE = "results/summary/SVM_training_results.csv"
 
 # 3. MLP
-RESULTS_FILE = "results/summary/MLP_training_results.csv"
+# RESULTS_FILE = "results/summary/MLP_training_results.csv"
 
 # 4. Random Forest
 # RESULTS_FILE = "results/summary/RF_training_results.csv"
@@ -61,7 +61,7 @@ RESULTS_FILE = "results/summary/MLP_training_results.csv"
 # RESULTS_FILE = "results/summary/NB_training_results.csv"
 
 # 8. Gradient Boosting
-# RESULTS_FILE = "results/summary/GB_training_results.csv"
+RESULTS_FILE = "results/summary/GB_training_results.csv"
 
 # 9. Voting Ensemble
 # RESULTS_FILE = "results/summary/VOTE_training_results.csv"
@@ -281,20 +281,19 @@ def run_pipeline(configurations, model_names, parameter_grids):
                     
                     y_pred = trained_model.predict(X_te)
                     
-                    logger.save_predictions(run_path, y_test, y_pred)
+                    y_test_clean = pd.Series(y_test).reset_index(drop=True)
+                    y_pred_clean = pd.Series(y_pred).reset_index(drop=True)
+                    
+                    logger.save_predictions(run_path, y_test_clean, y_pred_clean)
 
                     # decoded labels only for IoT dataset
                     if dataset_name == "ioT_context":
                         reverse_map = {v: k for k, v in label_mapping.items()}
 
-                        decoded_preds = pd.Series(y_pred).map(reverse_map)
-                        decoded_y_test = pd.Series(y_test).map(reverse_map)
+                        decoded_y_test = y_test_clean.map(reverse_map)
+                        decoded_preds = y_pred_clean.map(reverse_map)
 
-                        logger.save_predictions(
-                            run_path,
-                            decoded_y_test,
-                            decoded_preds
-                        )
+                        logger.save_predictions(run_path, decoded_y_test, decoded_preds)
                         
                     # metrics still use numeric labels
                     section("Evaluating model")

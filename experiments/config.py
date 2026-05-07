@@ -17,29 +17,29 @@ REQUIRED_SCHEMA = {
 # Run ONE model at a time
 # ==================================================
 
-# 1. KNN
+# 1. KNN :::::::::::======= true
 # MODELS = ["KNN"]
 
-# 2. SVM
+# 2. SVM :::::::::::======= true
 # MODELS = ["SVM"]
 
-# 3. MLP
-MODELS = ["MLP"]
+# 3. MLP :::::::::::======= true
+# MODELS = ["MLP"]
 
-# 4. Random Forest
+# 4. Random Forest :::::::::::======= true
 # MODELS = ["RF"]
 
 # 5. Logistic Regression
 # MODELS = ["LR"]
 
-# 6. Decision Tree
+# 6. Decision Tree :::::::::::======= true
 # MODELS = ["DT"]
 
-# 7. Naive Bayes
+# 7. Naive Bayes  :::::::::::======= true
 # MODELS = ["NB"]
 
 # 8. Gradient Boosting
-# MODELS = ["GB"]
+MODELS = ["GB"]
 
 # 9. Voting Ensemble
 # Uses multiple models internally, so heavier than single models

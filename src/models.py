@@ -11,10 +11,15 @@ from sklearn.ensemble import VotingClassifier
 def get_model(name):
     models = {
         "KNN": KNeighborsClassifier(),
-        "SVM": SVC(),
+        "SVM": SVC(probability=True),
         "MLP": MLPClassifier(),
         "RF": RandomForestClassifier(),
-        "LR": LogisticRegression(max_iter=300),
+        "LR": LogisticRegression(
+                solver="saga",
+                max_iter=1000,
+                class_weight="balanced",
+                random_state=42
+            ),
         "DT": DecisionTreeClassifier(),
         "NB": GaussianNB(),
         "GB": GradientBoostingClassifier(),
@@ -23,7 +28,7 @@ def get_model(name):
             estimators=[
                 ("rf", RandomForestClassifier()),
                 ("svm", SVC(probability=True)),
-                ("lr", LogisticRegression(max_iter=300))
+                ("lr", LogisticRegression())
             ],
             voting="soft"
         )

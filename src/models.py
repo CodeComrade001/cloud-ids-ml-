@@ -24,14 +24,14 @@ def get_model(name):
         "NB": GaussianNB(),
         "GB": GradientBoostingClassifier(),
 
-        "VOTE": VotingClassifier(
-            estimators=[
-                ("rf", RandomForestClassifier()),
-                ("svm", SVC(probability=True)),
-                ("lr", LogisticRegression())
-            ],
-            voting="soft"
-        )
+        # "VOTE": VotingClassifier(
+        #     estimators=[
+        #         ("rf", RandomForestClassifier()),
+        #         ("svm", SVC(probability=True)),
+        #         ("lr", LogisticRegression())
+        #     ],
+        #     voting="soft"
+        # )
     }
 
     return models[name]

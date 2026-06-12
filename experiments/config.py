@@ -18,7 +18,7 @@ REQUIRED_SCHEMA = {
 # ==================================================
 
 # 1. KNN :::::::::::======= true
-# MODELS = ["KNN"]
+MODELS = ["KNN"]
 
 # 2. SVM :::::::::::======= true
 # MODELS = ["SVM"]
@@ -38,8 +38,8 @@ REQUIRED_SCHEMA = {
 # 7. Naive Bayes  :::::::::::======= true
 # MODELS = ["NB"]
 
-# 8. Gradient Boosting
-MODELS = ["GB"]
+# 8. Gradient Boosting   :::::::::::======= true
+# MODELS = ["GB"]
 
 # 9. Voting Ensemble
 # Uses multiple models internally, so heavier than single models

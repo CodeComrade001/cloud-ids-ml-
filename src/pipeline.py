@@ -40,7 +40,7 @@ DATASETS = {
 # ==================================================
 
 # 1. KNN
-# RESULTS_FILE = "results/summary/KNN_training_results.csv"
+RESULTS_FILE = "results/summary/KNN_training_results.csv"
 
 # 2. SVM
 # RESULTS_FILE = "results/summary/SVM_training_results.csv"
@@ -61,7 +61,7 @@ DATASETS = {
 # RESULTS_FILE = "results/summary/NB_training_results.csv"
 
 # 8. Gradient Boosting
-RESULTS_FILE = "results/summary/GB_training_results.csv"
+# RESULTS_FILE = "results/summary/GB_training_results.csv"
 
 # 9. Voting Ensemble
 # RESULTS_FILE = "results/summary/VOTE_training_results.csv"
@@ -76,7 +76,6 @@ def line():
 
 def section(title):
     print(f"\n🔹 {title}")
-
 
 # ==========================================================
 # MAIN PIPELINE
@@ -149,8 +148,8 @@ def run_pipeline(configurations, model_names, parameter_grids):
             X_train, X_val, X_test, y_train, y_val, y_test = split_data(
                 df=df,
                 target_col=target_col,
-                test_size=0.30,     # changed from 0.20
-                val_size=0.00,      # no validation split
+                test_size=0.30,     
+                val_size=0.00,      
                 time_column=None,
                 dataset_name=dataset_name,
                 iot_sample_frac=0.10
@@ -169,7 +168,9 @@ def run_pipeline(configurations, model_names, parameter_grids):
         # --------------------------------------------------
         # SCALE BASE FEATURES
         # --------------------------------------------------
+        line()
         section("Scaling features")
+        line()
 
         X_train, X_val, X_test = scale_data(X_train, X_val, X_test)
 
@@ -201,7 +202,9 @@ def run_pipeline(configurations, model_names, parameter_grids):
             # FEATURE ENGINEERING
             # ----------------------------------------------
             if config["features"]:
+                line()
                 section("Feature engineering")
+                line()
 
                 fe = FeatureEngineer()
 
@@ -214,7 +217,9 @@ def run_pipeline(configurations, model_names, parameter_grids):
             # ----------------------------------------------
             # RE-SCALE
             # ----------------------------------------------
+            line()
             section("Rescaling engineered features")
+            line()
 
             X_tr, X_val_tr, X_te = scale_data(X_tr, X_val_tr, X_te)
 
@@ -222,7 +227,9 @@ def run_pipeline(configurations, model_names, parameter_grids):
             # PCA
             # ----------------------------------------------
             if config["pca"]:
+                line()
                 section("Applying PCA")
+                line()
 
                 X_tr, X_val_tr, X_te = apply_pca(X_tr, X_val_tr, X_te)
 
@@ -296,7 +303,10 @@ def run_pipeline(configurations, model_names, parameter_grids):
                         logger.save_predictions(run_path, decoded_y_test, decoded_preds)
                         
                     # metrics still use numeric labels
-                    section("Evaluating model")
+                    line()
+                    section("📅 Evaluating model")
+                    line()
+                    
                     unique_preds = np.unique(y_pred)
                     unique_true = np.unique(y_test)
 
